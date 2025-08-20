@@ -1,6 +1,9 @@
 package entity
 
+import "go.mongodb.org/mongo-driver/bson/primitive"
+
 type Users struct {
-	UserName string `json:"user_name" gorm:"primaryKey; type:varchar(50); not null"`
-	Password string `json:"password" gorm:"type:varchar(100); not null"`
+	ID       primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	Username string             `bson:"username" json:"username"`
+	Password string             `bson:"password" json:"password"`
 }
