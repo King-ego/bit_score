@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bit_score/db"
 	"bit_score/router"
 	"context"
 	"errors"
@@ -15,11 +16,32 @@ import (
 )
 
 func main() {
+	database, err := db.ConnectDb()
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
+	log.Println("Database connected successfully")
+
 	server := gin.Default()
 
 	server.GET("/health", func(c *gin.Context) {
+		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+		defer cancel()
+
+		err := database.Client().Ping(ctx, nil)
+		if err != nil {
+			c.JSON(500, gin.H{
+				"status":   "error",
+				"database": "disconnected",
+				"error":    err.Error(),
+			})
+			return
+		}
+
 		c.JSON(200, gin.H{
-			"status": "ok",
+			"status":    "ok",
+			"database":  "connected",
+			"timestamp": time.Now().Format(time.RFC3339),
 		})
 	})
 
