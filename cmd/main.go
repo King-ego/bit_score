@@ -45,7 +45,7 @@ func main() {
 		})
 	})
 
-	router.SetupAllRoutes(server)
+	router.SetupAllRoutes(server, database)
 
 	srv := &http.Server{
 		Addr:    ":8182",
