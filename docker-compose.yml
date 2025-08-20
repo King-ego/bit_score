@@ -3,6 +3,11 @@ services:
     image: mongo:latest
     ports:
       - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password123
+      - MONGO_INITDB_DATABASE=bitscore
+    restart: unless-stopped
     volumes:
       - ./mongo-data:/data/db
   bit_score:
@@ -11,3 +16,8 @@ services:
       dockerfile: Dockerfile
     ports:
         - "8182:8182"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://admin:password123@mongodb:27017/bitscore?authSource=admin
+    restart: unless-stopped
