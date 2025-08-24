@@ -11,18 +11,17 @@ type PlayersRepository interface {
 }
 
 type playersRepository struct {
-	db *mongo.Database
+	db *mongo.Collection
 }
 
 func NewPlayersRepository(db *mongo.Database) PlayersRepository {
 	return &playersRepository{
-		db: db,
+		db: db.Collection("players"),
 	}
 }
 
 func (r *playersRepository) Create(player ICreatePlayer) error {
-	collection := r.db.Collection("players")
-	_, err := collection.InsertOne(nil, map[string]interface{}{
+	_, err := r.db.InsertOne(nil, map[string]interface{}{
 		"name": player.Name,
 	})
 	if err != nil {
