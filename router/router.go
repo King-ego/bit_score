@@ -21,6 +21,7 @@ func NewRouter(server *gin.Engine, db *mongo.Database) *SetupRoutes {
 
 func (r *SetupRoutes) setupRouters() {
 	routers.SetupSessionRoutes(r.server, r.db)
+	routers.NewPlayersRouters(r.server, r.db)
 }
 
 func (r *SetupRoutes) Routers() {
