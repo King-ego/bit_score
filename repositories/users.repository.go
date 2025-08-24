@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type UsersRepositoryInterface interface {
+type UsersRepository interface {
 	GetByUserName(username string) (entity.Users, error)
 }
 
@@ -16,7 +16,7 @@ type usersRepository struct {
 	collection *mongo.Collection
 }
 
-func NewUsersRepository(db *mongo.Database) UsersRepositoryInterface {
+func NewUsersRepository(db *mongo.Database) UsersRepository {
 	return &usersRepository{
 		collection: db.Collection("users"),
 	}
