@@ -10,10 +10,10 @@ type SessionUseCase interface {
 }
 
 type sessionUseCase struct {
-	repository repositories.UsersRepositoryInterface
+	repository repositories.UsersRepository
 }
 
-func NewSessionUseCase(repository repositories.UsersRepositoryInterface) SessionUseCase {
+func NewSessionUseCase(repository repositories.UsersRepository) SessionUseCase {
 	return &sessionUseCase{
 		repository: repository,
 	}
