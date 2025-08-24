@@ -1,6 +1,10 @@
 package routers
 
 import (
+	"bit_score/controllers"
+	"bit_score/repositories"
+	"bit_score/usecases"
+
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -18,6 +22,14 @@ func NewPlayersRouters(server *gin.Engine, db *mongo.Database) *SetupPlayersRout
 }
 
 func (p *SetupPlayersRouter) setupRouters() {
+	playerRepository := repositories.NewPlayersRepository(p.db)
+	playerUseCase := usecases.NewPlayerRequest(playerRepository)
+	playerController := controllers.NewPlayerController(playerUseCase)
+
+	player := p.server.Group("/players")
+	{
+		player.POST("/", playerController.CreatePlayer)
+	}
 
 }
 
