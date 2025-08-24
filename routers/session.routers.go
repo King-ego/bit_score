@@ -2,6 +2,8 @@ package routers
 
 import (
 	"bit_score/controllers"
+	"bit_score/repositories"
+	"bit_score/usecases"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -20,11 +22,13 @@ func NewSessionRouters(server *gin.Engine, db *mongo.Database) *SetupSessionRout
 }
 
 func (s *SetupSessionRouters) setupRouters() {
-	controller := controllers.NewSessionsController()
+	sessionRepository := repositories.NewUsersRepository(s.db)
+	sessionUseCase := usecases.NewSessionUseCase(sessionRepository)
+	sessionController := controllers.NewSessionsController(sessionUseCase)
 
 	sessions := s.server.Group("/sessions")
 	{
-		sessions.POST("/", controller.CreateSession)
+		sessions.POST("/", sessionController.CreateSession)
 	}
 }
 
