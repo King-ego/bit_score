@@ -44,7 +44,6 @@ func ConnectDb() (*mongo.Database, error) {
 		return nil, err
 	}
 
-	// Testar conexão
 	err = client.Ping(ctx, nil)
 	if err != nil {
 		return nil, err
