@@ -1,12 +1,12 @@
 package usecases
 
 import (
-	"bit_score/entity"
+	"bit_score/entities"
 	"bit_score/repositories"
 )
 
 type SessionUseCase interface {
-	Login(username string, password string) (entity.Users, error)
+	Login(username string, password string) (entities.Users, error)
 }
 
 type sessionUseCase struct {
@@ -19,11 +19,11 @@ func NewSessionUseCase(repository repositories.UsersRepository) SessionUseCase {
 	}
 }
 
-func (s *sessionUseCase) Login(username string, password string) (entity.Users, error) {
+func (s *sessionUseCase) Login(username string, password string) (entities.Users, error) {
 	user, err := s.repository.GetByUserName(username)
 
 	if err != nil {
-		return entity.Users{}, err
+		return entities.Users{}, err
 	}
 
 	return user, nil
