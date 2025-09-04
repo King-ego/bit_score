@@ -39,7 +39,7 @@ jobs:
 
           echo "Testando rota /health..."
           for i in {1..10}; do
-            if curl -s http://localhost:8989/health | grep -q "connected"; then
+            if curl -s http://localhost:8182/health | grep -q "connected"; then
               echo "✅ Serviço respondeu saudável!"
               exit 0
             fi
