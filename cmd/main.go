@@ -39,8 +39,7 @@ func main() {
 		}
 
 		c.JSON(200, gin.H{
-			"status":    "ok",
-			"database":  "connected",
+			"status":    "connected",
 			"timestamp": time.Now().Format(time.RFC3339),
 		})
 	})
