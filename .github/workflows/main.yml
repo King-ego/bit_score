@@ -1,0 +1,55 @@
+name: main.yml
+on:
+  push:
+    branches: [ main, develop ]
+jobs:
+  docker:
+    name: CI Docker Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Copiar .env.example to .env
+        run: cp .env.example .env
+
+      - name: Subir Docker Compose
+        run: docker compose -f docker-compose.yml up -d --build
+
+      - name: 🕒 Aguardar serviços subirem
+        run: |
+          echo "Aguardando Postgres e Redis..."
+          sleep 20
+
+      - name: 📋 Verificar containers ativos
+        run: |
+          CONTAINER_COUNT=$(docker ps -q | wc -l)
+          echo "Containers ativos: $CONTAINER_COUNT"
+          if [ "$CONTAINER_COUNT" -ne 2 ]; then
+            echo "❌ Esperado 2 containers, encontrados $CONTAINER_COUNT"
+            exit 1
+          fi
+          echo "✅ 2 containers ativos confirmados"
+
+      - name: 🔍 Testar rota /health
+        run: |
+          echo "Aguardando inicialização dos serviços..."
+          sleep 30
+
+          echo "Testando rota /health..."
+          for i in {1..10}; do
+            if curl -s http://localhost:8989/health | grep -q "connected"; then
+              echo "✅ Serviço respondeu saudável!"
+              exit 0
+            fi
+            echo "Tentativa $i/10 - Aguardando serviço iniciar..."
+            sleep 10
+          done
+          echo "❌ Serviço não respondeu a tempo."
+
+          echo "=== LOGS DO BANCO ==="
+          docker compose logs manager_db
+          echo "=== LOGS DA APLICAÇÃO ==="
+          docker compose logs manager_project
+          exit 1
