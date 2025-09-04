@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"bit_score/entity"
+	"bit_score/entities"
 	"context"
 	"errors"
 
@@ -9,7 +9,7 @@ import (
 )
 
 type UsersRepository interface {
-	GetByUserName(username string) (entity.Users, error)
+	GetByUserName(username string) (entities.Users, error)
 }
 
 type usersRepository struct {
@@ -22,15 +22,15 @@ func NewUsersRepository(db *mongo.Database) UsersRepository {
 	}
 }
 
-func (r *usersRepository) GetByUserName(username string) (entity.Users, error) {
-	var user entity.Users
+func (r *usersRepository) GetByUserName(username string) (entities.Users, error) {
+	var user entities.Users
 	filter := map[string]interface{}{"username": username}
 	err := r.collection.FindOne(context.Background(), filter).Decode(&user)
 	if err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
-			return entity.Users{}, nil
+			return entities.Users{}, nil
 		}
-		return entity.Users{}, err
+		return entities.Users{}, err
 	}
 	return user, nil
 }
