@@ -54,7 +54,7 @@ func (tc *TeamController) GetTeamByID(c *gin.Context) {
 
 	team, err := tc.teamUseCase.GetTeamByID(id)
 	if err != nil {
-		c.JSON(404, gin.H{"error": "Team not found"})
+		c.JSON(404, gin.H{"error": "Team not found!"})
 		return
 	}
 
