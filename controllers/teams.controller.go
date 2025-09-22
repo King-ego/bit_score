@@ -32,7 +32,7 @@ func (tc *TeamController) CreateTeam(c *gin.Context) {
 	}
 
 	c.JSON(200, gin.H{
-		"message": "Team created successful",
+		"message": "Team created successfully",
 		"team":    team,
 	})
 }
