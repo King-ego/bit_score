@@ -8,7 +8,7 @@ Este projeto utiliza o MongoDB como banco de dados, executado em um container Do
 2. Execute o comando abaixo para iniciar o serviço MongoDB:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 Isso irá iniciar o MongoDB em segundo plano, conforme definido no arquivo `docker-compose.yml`.
@@ -21,7 +21,7 @@ Isso irá iniciar o MongoDB em segundo plano, conforme definido no arquivo `dock
 Para parar o MongoDB:
 
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ## Observações
